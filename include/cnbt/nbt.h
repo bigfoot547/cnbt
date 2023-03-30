@@ -46,7 +46,7 @@ struct nbt__mem_header /* internal */ {
 	nbt__mem_header_fields(void)
 };
 
-#define nbt__mem_access(_mem, _f) (((struct nbt__mem_header *)(_mem))->(_f))
+#define nbt__mem_access(_mem, _f) (((struct nbt__mem_header *)(_mem))->_f)
 #define nbt__mem_length(_mem)     nbt__mem_access(_mem, length)
 #define nbt__mem_data(_mem)       nbt__mem_access(_mem, data)
 #define nbt__mem_data_t(_t, _mem) ((_t)nbt__mem_data(_mem))
@@ -73,7 +73,7 @@ struct nbt__list_header /* internal */ {
 	nbt_type type;
 };
 
-#define nbt__list_access(_l, _f) (((struct nbt__list_header *)(_l))->(_f))
+#define nbt__list_access(_l, _f) (((struct nbt__list_header *)(_l))->_f)
 #define nbt_list_length(_l)      nbt__list_access(_l, length)
 #define nbt_list_values(_l)      nbt__list_access(_l, values)
 #define nbt_list_type(_l)        nbt__list_access(_l, type)
@@ -119,8 +119,9 @@ nbt_byte_array *nbt_copy_bytes(const nbt_byte *data, size_t length);
 /* does NOT copy data (make sure it is on the heap) and creates an nbt_byte_array for it*/
 nbt_byte_array *nbt_move_bytes(nbt_byte *data, size_t length);
 
-nbt_string *nbt_copy_string(const char *data, int32_t length);
-nbt_string *nbt_move_string(char *data, int32_t length);
+/* if length is negative, strlen is used */
+nbt_string *nbt_copy_string(const char *data, intmax_t length);
+nbt_string *nbt_move_string(char *data, intmax_t length);
 
 nbt_int_array *nbt_copy_ints(const nbt_int *data, size_t length);
 nbt_int_array *nbt_move_ints(nbt_int *data, size_t length);

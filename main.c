@@ -2,12 +2,17 @@
 #include <stdio.h>
 
 int main(void) {
-	printf("%zu\n", sizeof(nbt_tag));
+	nbt_byte amog[] = {0, 1, 2, 3, 4};
+	nbt_byte_array *arr1 = nbt_copy_bytes(amog, 5);
+	nbt_byte_array *arr2 = nbt_move_bytes(amog, 5);
 
-	struct nbt_compound *c = nbt_compound_create();
+	for (int i = 0; i < nbt_byte_array_length(arr1); ++i) {
+		printf("%hhd\n", nbt_byte_array_data(arr1)[i]);
+	}
 
-	nbt_unref(c);
-	//struct nbt_compound *comp = nbt_compound_create();
-	//nbt_compound_put_compound("sus", nbt_compound_create());
+	printf("trap\n");
+
+	nbt_unref(arr1);
+	nbt_unref(arr2);
 	return 0;
 }
