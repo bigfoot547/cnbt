@@ -176,27 +176,6 @@ void nbt_compound_put_compound(nbt_compound *compound, const char *name, nbt_com
 void nbt_compound_put_compound2(nbt_compound *compound, const char *name, int32_t len, nbt_compound *obj);
 
 /* NOTE: return values are not ref'd. Call nbt_ref on them if you want to keep them. */
-#define nbt__paste2(_x, _y) _x ## _y
-#define nbt__paste(_x, _y) nbt__paste2(_x, _y)
-
-/* int_array -> nbt_int_array */
-#define nbt__tn(_t) nbt__paste(nbt_, _t)
-
-/* int_array, put -> nbt_compound_put_int_array */
-#define nbt__id(_t, _o) nbt__paste(nbt__paste(nbt__paste(nbt_compound_, _o), _), _t)
-
-/* int_array, put -> nbt_compound_put_int_array2 */
-#define nbt__id2(_t, _o) nbt__paste(nbt__id(_t, _o), 2) 
-
-/* generates function signatures (slightly defeats the purpose if they're not human-readable but ok) */
-#define nbt__compound_put_buf(_tn, _var, _st, _bt)                                                            \
-nbt__tn(_tn) *nbt__id(_tn, put)(nbt_compound *compound, const char *name, nbt__tn(_tn) *_var);                \
-nbt__tn(_tn) *nbt__id2(_tn, put)(nbt_compound *compound, const char *name, int32_t nlen, nbt__tn(_tn) *_var); \
-nbt__tn(_tn) *nbt__id(_tn, copy)(nbt_compound *compound, const char *name, const _st *data, _bt dlen);        \
-nbt__tn(_tn) *nbt__id2(_tn, copy)(nbt_compound *compound, const char *name, int32_t nlen, const _st *data, _bt dlen); \
-nbt__tn(_tn) *nbt__id(_tn, move)(nbt_compound *compound, const char *name, _st *data, _bt dlen);              \
-nbt__tn(_tn) *nbt__id2(_tn, move)(nbt_compound *compound, const char *name, int32_t nlen, _st *data, _bt dlen);
-
 nbt_byte_array *nbt_compound_put_byte_array(nbt_compound *compound, const char *name, nbt_byte_array *bytes);
 nbt_byte_array *nbt_compound_put_byte_array2(nbt_compound *compound, const char *name, int32_t nlen, nbt_byte_array *bytes);
 nbt_byte_array *nbt_compound_copy_byte_array(nbt_compound *compound, const char *name, const nbt_byte *data, size_t dlen);
@@ -204,7 +183,7 @@ nbt_byte_array *nbt_compound_copy_byte_array2(nbt_compound *compound, const char
 nbt_byte_array *nbt_compound_move_byte_array(nbt_compound *compound, const char *name, nbt_byte *data, size_t dlen);
 nbt_byte_array *nbt_compound_move_byte_array2(nbt_compound *compound, const char *name, int32_t nlen, nbt_byte *data, size_t dlen);
 
-/* if lenght is negative, strlen is used to determine length */
+/* if length is negative, strlen is used to determine length */
 nbt_string *nbt_compound_put_string(nbt_compound *compound, const char *name, nbt_string *str);
 nbt_string *nbt_compound_put_string2(nbt_compound *compound, const char *name, int32_t nlen, nbt_string *str);
 nbt_string *nbt_compound_copy_string(nbt_compound *compound, const char *name, const char *data, intmax_t dlen);
@@ -225,18 +204,6 @@ nbt_long_array *nbt_compound_copy_long_array(nbt_compound *compound, const char 
 nbt_long_array *nbt_compound_copy_long_array2(nbt_compound *compound, const char *name, int32_t nlen, const nbt_long *data, size_t dlen);
 nbt_long_array *nbt_compound_move_long_array(nbt_compound *compound, const char *name, nbt_long *data, size_t dlen);
 nbt_long_array *nbt_compound_move_long_array2(nbt_compound *compound, const char *name, int32_t nlen, nbt_long *data, size_t dlen);
-
-/*nbt__compound_put_buf(byte_array, bytes, nbt_byte, size_t)
-nbt__compound_put_buf(string, str, char, intmax_t)
-nbt__compound_put_buf(int_array, ints, nbt_int, size_t)
-nbt__compound_put_buf(long_array, longs, nbt_long, size_t)*/
-
-#undef nbt__compound_put_buf
-#undef nbt__id2
-#undef nbt__id
-#undef nbt__tn
-#undef nbt__paste
-#undef nbt__paste2
 
 #endif
 
